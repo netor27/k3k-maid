@@ -85,8 +85,9 @@ class VoiceChannels {
 			// check only voice channel types
 			if (item.type == voiceChannelType) {
 				const channelData = this.getChannelNameData(item.name);
+
 				// if the other channel has the same prefix, a different number and it's empty, return true
-				if (channelData.prefix == channelPrefix && channelData.number != channelNumber && item.members.size == 0) {
+				if (channelData != undefined && channelData.prefix == channelPrefix && channelData.number != channelNumber && item.members.size == 0) {
 					foundAnotherEmptyChannel = true;
 				}
 			}
