@@ -4,49 +4,61 @@ const nameSeparator = '-';
 class VoiceChannels {
 
 	onUserLeavesChannel(channel) {
-		// get the number of the channel
-		const channelData = this.getChannelNameData(channel.name);
-		if (channelData == undefined) {
-			return;
+		try {
+			// get the number of the channel
+			const channelData = this.getChannelNameData(channel.name);
+			if (channelData == undefined) {
+				return;
+			}
+
+			// if this is a channel without category, don't do nothing
+			if (channel.parent == null || channel.parent == undefined) {
+				return;
+			}
+
+			// if the channel still has members
+			// or the number suffix of the channel is 1
+			// dont'do nothing
+			if (channel.members.size > 0 || channelData.number == 1) {
+				return;
+			}
+
+			if (this.anotherEmptyChannelExists(channel, channelData.prefix, channelData.number)) {
+				channel.delete('Unused channel');
+			}
+		}
+		catch (error) {
+			console.error(error);
 		}
 
-		// if this is a channel without category, don't do nothing
-		if (channel.parent == null || channel.parent == undefined) {
-			return;
-		}
-
-		// if the channel still has members
-		// or the number suffix of the channel is 1
-		// dont'do nothing
-		if (channel.members.size > 0 || channelData.number == 1) {
-			return;
-		}
-
-		if (this.anotherEmptyChannelExists(channel, channelData.prefix, channelData.number)) {
-			channel.delete('Unused channel');
-		}
 	}
 
 	onUserJoinsChannel(channel) {
-		// get the number of the channel
-		const channelData = this.getChannelNameData(channel.name);
-		if (channelData == undefined) {
-			return;
+		try {
+			// get the number of the channel
+			const channelData = this.getChannelNameData(channel.name);
+			if (channelData == undefined) {
+				return;
+			}
+
+			// if this is a channel without category, don't do nothing
+			if (channel.parent == null || channel.parent == undefined) {
+				return;
+			}
+
+			// if we don't have another empty channel, clone this one with the same prefix, but an increased number
+			if (!this.anotherEmptyChannelExists(channel, channelData.prefix, channelData.number)) {
+				const n = this.getMaxChannelNumber(channel, channelData.prefix) + 1;
+				channel.clone(channelData.prefix + ' ' + nameSeparator + ' ' + n, true, true, 'Created because no empty channels existed.')
+					.then(newChannel => {
+						newChannel.setParent(channel.parent.id);
+					});
+			}
+		}
+		catch (error) {
+			console.error(error);
 		}
 
-		// if this is a channel without category, don't do nothing
-		if (channel.parent == null || channel.parent == undefined) {
-			return;
-		}
-
-		// if we don't have another empty channel, clone this one with the same prefix, but an increased number
-		if (!this.anotherEmptyChannelExists(channel, channelData.prefix, channelData.number)) {
-			const n = this.getMaxChannelNumber(channel, channelData.prefix) + 1;
-			channel.clone(channelData.prefix + ' ' + nameSeparator + ' ' + n, true, true, 'Created because no empty channels existed.')
-				.then(newChannel => {
-					newChannel.setParent(channel.parent.id);
-				});
-		}
 	}
 
 	getChannelNameData(channelName) {
