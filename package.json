@@ -1,0 +1,31 @@
+{
+  "name": "k3k-maid",
+  "version": "1.0.0",
+  "description": "Discord bot that creates and deletes voice channels automatically",
+  "main": "./app/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node .",
+    "lint": "eslint ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/netor27/k3k-maid.git"
+  },
+  "keywords": [
+    "discord",
+    "bot"
+  ],
+  "author": "Neto",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/netor27/k3k-maid/issues"
+  },
+  "homepage": "https://github.com/netor27/k3k-maid#readme",
+  "dependencies": {
+    "discord.js": "^11.4.2",
+    "dotenv": "^6.2.0",
+    "eslint": "^5.13.0",
+    "npm": "^6.4.1"
+  }
+}
