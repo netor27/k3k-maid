@@ -2,7 +2,7 @@
   "name": "k3k-maid",
   "version": "1.0.0",
   "description": "Discord bot that creates and deletes voice channels automatically",
-  "main": "./app/index.js",
+  "main": "./app/komodoMaid.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node .",
