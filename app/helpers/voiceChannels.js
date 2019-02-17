@@ -17,13 +17,17 @@ class VoiceChannels {
 			}
 
 			// if the channel still has members
-			// or the number suffix of the channel is 1
 			// dont'do nothing
-			if (channel.members.size > 0 || channelData.number == 1) {
+			if (channel.members.size > 0) {
 				return;
 			}
 
-			if (this.anotherEmptyChannelExists(channel, channelData.prefix, channelData.number)) {
+			// if its the #1 channel, check the others and erase the empty ones
+			if (channelData.number == 1) {
+				this.cleanupEmptyChannels(channel, channelData.prefix);
+				return;
+			}
+			else if (this.anotherEmptyChannelExists(channel, channelData.prefix, channelData.number)) {
 				channel.delete('Unused channel');
 			}
 		}
@@ -113,6 +117,21 @@ class VoiceChannels {
 			}
 		});
 		return maxNumber;
+	}
+
+	cleanupEmptyChannels(channel, channelPrefix) {
+		// iterate over all the channels parent category
+		channel.parent.children.forEach(item => {
+			// check only voice channel types
+			if (item.type == voiceChannelType) {
+				const channelData = this.getChannelNameData(item.name);
+
+				// if the other channel has the same prefix, it's not the #1 and it's empty, delete the channel
+				if (channelData != undefined && channelData.prefix == channelPrefix && channelData.number != 1 && item.members.size == 0) {
+					item.delete('Unused channel');
+				}
+			}
+		});
 	}
 }
 
