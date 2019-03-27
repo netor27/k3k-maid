@@ -53,7 +53,7 @@ class VoiceChannels {
 			// if we don't have another empty channel, clone this one with the same prefix, but an increased number
 			if (!this.anotherEmptyChannelExists(channel, channelData.prefix, channelData.number)) {
 				const n = this.getMaxChannelNumber(channel, channelData.prefix) + 1;
-				channel.clone(channelData.prefix + ' ' + nameSeparator + ' ' + n, true, true, 'Created because no empty channels existed.')
+				channel.clone(channelData.prefix + ' ' + nameSeparator + ' ' + n, false, false, 'Created because no empty channels existed.')
 					.then(newChannel => {
 						newChannel.setParent(channel.parent.id);
 					});
