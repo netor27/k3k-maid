@@ -9,8 +9,8 @@ const VoiceChannels = require('./helpers/voiceChannels');
 
 bot.on('voiceStateUpdate', (oldMember, newMember) => {
 	try {
-		const newUserChannel = newMember.voiceChannel;
-		const oldUserChannel = oldMember.voiceChannel;
+		const newUserChannel = newMember.channel;
+		const oldUserChannel = oldMember.channel;
 		const handler = new VoiceChannels();
 		// if the old user channel is not undefined, it means the user
 		// leaved a channel

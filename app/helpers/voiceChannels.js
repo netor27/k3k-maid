@@ -5,6 +5,9 @@ class VoiceChannels {
 
 	onUserLeavesChannel(channel) {
 		try {
+			if (channel == null) {
+				return;
+			}
 			// get the number of the channel
 			const channelData = this.getChannelNameData(channel.name);
 			if (channelData == undefined) {
@@ -39,6 +42,9 @@ class VoiceChannels {
 
 	onUserJoinsChannel(channel) {
 		try {
+			if (channel == null) {
+				return;
+			}
 			// get the number of the channel
 			const channelData = this.getChannelNameData(channel.name);
 			if (channelData == undefined) {
@@ -53,7 +59,7 @@ class VoiceChannels {
 			// if we don't have another empty channel, clone this one with the same prefix, but an increased number
 			if (!this.anotherEmptyChannelExists(channel, channelData.prefix, channelData.number)) {
 				const n = this.getMaxChannelNumber(channel, channelData.prefix) + 1;
-				channel.clone(channelData.prefix + ' ' + nameSeparator + ' ' + n, false, false, 'Created because no empty channels existed.')
+				channel.clone({ name: channelData.prefix + ' ' + nameSeparator + ' ' + n, reason: 'Created because no empty channels existed.' })
 					.then(newChannel => {
 						newChannel.setParent(channel.parent.id);
 					});
